@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mục lục sản phẩm</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+    <link rel="stylesheet" href="San-pham-1.css">
+</head>
+
+<body style="padding-top: 70px;">
+
+    <header>
+        <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm fixed-top">
+            <div class="container">
+                <a class="navbar-brand text-dark fw-bold fs-3" href="index.html">DREAMS HOME</a>
+
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                    aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+                    <ul class="navbar-nav">
+                        <li class="nav-item">
+                            <a class="nav-link text-uppercase" href="/index.html">Giới thiệu</a>
+                        </li>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link fw-bold dropdown-toggle text-uppercase" href="#" id="navbarDropdown"
+                                role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                Sản phẩm
+                            </a>
+                            <ul class="dropdown-menu border-top border-primary border-3"
+                                aria-labelledby="navbarDropdown">
+                                <li><a class="dropdown-item" href="San-pham-1.html">Chăn</a></li>
+                                <li><a class="dropdown-item" href="San-pham-1.html">Gối</a></li>
+                                <li><a class="dropdown-item" href="San-pham-1.html">Nệm</a></li>
+                                <li><a class="dropdown-item" href="San-pham-1.html">Combo</a></li>
+                            </ul>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-uppercase" href="/Gio-hang/Gio-hang.html"><i
+                                    class="fas fa-shopping-cart"></i> Giỏ hàng</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-uppercase" href="/Gio-hang/history.html"> Lịch sử đơn hàng</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-uppercase" href="login-main/index_login.html" id="login-link">
+                                <i class="fas fa-user me-1"></i> Đăng nhập
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <section class="hero-section text-center text-white d-flex align-items-center justify-content-center">
+        <div class="container hero-content position-relative" style="z-index: 2;">
+            <h1 class="display-2 fw-light mb-3">Sản Phẩm</h1>
+            <p class="lead fw-light mb-5">Lụa, Cotton & Linen cao cấp. Thiết kế tinh tế, sang trọng.</p>
+            <a href="#" class="btn btn-light btn-lg rounded-pill px-5 text-uppercase fw-bold">Khám Phá Ngay</a>
+        </div>
+    </section>
+
+    <section class="container py-5">
+        <h2 class="text-center mb-5 text-dark fw-light fs-1">Tất Cả Sản Phẩm</h2>
+
+        <div id="productList" class="row"></div>
+
+    </section>
+
+    </section>
+    <footer class="bg-dark text-white text-center py-4 mt-5">
+        <div class="container">
+            <p class="mb-0 fs-6">&copy; 2025 Dreams Home. Luxury Bedding.</p>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
+
+    <script>
+        const firebaseConfig = {
+            apiKey: "AIzaSyCxZiG2atJ0QXFZq0afg__t_VkMO-RGRvQ",
+            authDomain: "hungnhe1-d394c.firebaseapp.com",
+            databaseURL: "https://hungnhe1-d394c-default-rtdb.asia-southeast1.firebasedatabase.app",
+            projectId: "hungnhe1-d394c",
+            storageBucket: "hungnhe1-d394c.firebasestorage.app",
+            messagingSenderId: "840678788906",
+            appId: "1:840678788906:web:a41f28793a3dcc021c1853"
+        };
+
+        firebase.initializeApp(firebaseConfig);
+        const auth = firebase.auth();
+        const db = firebase.database();
+        const app = initializeApp(firebaseConfig);
+    </script>
+    <script src="login-checking.js"></script>
+    <script>
+        function loadProducts() {
+            const productList = document.getElementById("productList");
+
+            if (!productList) {
+                console.error("Không tìm thấy #productList");
+                return;
+            }
+
+            const productsRef = db.ref("products");
+
+            productsRef.on("value", (snapshot) => {
+                productList.innerHTML = "";
+
+                snapshot.forEach((child) => {
+                    const sp = child.val();
+                    const id = child.key;
+
+                    const col = document.createElement("div");
+                    col.classList.add("col-lg-3", "col-md-6", "col-sm-12");
+
+                    col.innerHTML = `
+                        <div class="card h-100 text-center shadow-sm border-0 product-card">
+                            <img src="${sp.img}" class="card-img-top product-img" alt="${sp.name}">
+                                <div class="card-body d-flex flex-column">
+                                    <h5 class="card-title fw-bold">${sp.name}</h5>
+                                    <p class="text-danger fw-bold fs-5 mt-auto">${Number(sp.price).toLocaleString()}₫</p>
+
+                                    <button class="btn btn-outline-dark btn-sm rounded-0"
+                                    onclick="viewDetail('${id}')">
+                                    Xem chi tiết
+                                    </button>
+                                </div>
+                            </div>
+                        `;
+
+                    productList.appendChild(col);
+                });
+            });
+        }
+
+        function viewDetail(id) {
+            window.location.href = "san-pham-2.html?id=" + id;
+        }
+
+        loadProducts();
+    </script>
+
+
+
+</body>
+
+</html>

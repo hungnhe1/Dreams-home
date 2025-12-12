@@ -1,0 +1,140 @@
+:root {
+    --primary-color: #3f51b5;
+    --secondary-color: #f4f4f9;
+    --text-color: #333;
+    --hover-color: #536dfe;
+    --card-bg: #fff;
+    --shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    line-height: 1.6;
+    color: var(--text-color);
+    background-color: var(--secondary-color);
+}
+
+.body-padding {
+    padding-top: 70px;
+}
+
+.container {
+    width: 90%;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+a {
+    text-decoration: none;
+    color: var(--text-color);
+}
+
+ul {
+    list-style: none;
+}
+
+/* ------------------------------------
+   HEADER & NAVIGATION (Fixed Top)
+------------------------------------ */
+.header {
+    background-color: var(--card-bg);
+    box-shadow: var(--shadow);
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 1000;
+}
+
+.header-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 0;
+}
+
+.logo {
+    color: var(--primary-color);
+    margin: 0;
+    font-size: 1.8em;
+}
+
+.nav-list {
+    display: flex;
+    gap: 20px;
+}
+
+.nav-list a {
+    text-decoration: none;
+    color: var(--text-color);
+    font-weight: bold;
+    padding: 10px 5px;
+    display: block;
+}
+
+.nav-list a:hover {
+    color: var(--hover-color);
+}
+
+.footer {
+    background-color: var(--text-color);
+    color: white;
+    text-align: center;
+    padding: 20px 0;
+    margin-top: 50px;
+}
+
+h1 {
+    display: flex;
+    justify-content: center;
+}
+
+.pHistory {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+.pContainer {
+    width: 230px;
+    background: #fff;
+    padding: 12px;
+    border-radius: 10px;
+    box-shadow: 0 3px 8px rgba(0,0,0,0.15);
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin: 15px;
+    text-align: center;
+}
+
+.pContainer img {
+    width: 100%;
+    height: 180px;
+    object-fit: cover;
+    border-radius: 8px;
+}
+
+.pName {
+    font-weight: bold;
+    font-size: 18px;
+}
+
+.pCategory {
+    font-size: 14px;
+    opacity: 0.7;
+}
+
+.pPrice {
+    color: #d60000;
+    font-size: 18px;
+    font-weight: bold;
+}

@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Đăng ký</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+  <div class="form-container">
+    <h2>Đăng ký</h2>
+    <form id="signupForm">
+      <label>Email:</label>
+      <input type="text" id="email" required placeholder="example@gmail.com">
+
+      <label>Mật khẩu:</label>
+      <input type="password" id="password" required>
+
+      <label>Địa chỉ giao hàng:</label>
+      <input type="text" id="address" required>
+
+      <button type="submit">Đăng ký</button>
+      <p>Đã có tài khoản <a href="index_login.html">Đăng nhập</a></p>
+    </form>
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
+  <script>
+    const firebaseConfig = {
+      apiKey: "AIzaSyCxZiG2atJ0QXFZq0afg__t_VkMO-RGRvQ",
+      authDomain: "hungnhe1-d394c.firebaseapp.com",
+      databaseURL: "https://hungnhe1-d394c-default-rtdb.asia-southeast1.firebasedatabase.app",
+      projectId: "hungnhe1-d394c",
+      storageBucket: "hungnhe1-d394c.firebasestorage.app",
+      messagingSenderId: "840678788906",
+      appId: "1:840678788906:web:a41f28793a3dcc021c1853"
+    };
+
+    firebase.initializeApp(firebaseConfig);
+
+    window.auth = firebase.auth();
+    window.db = firebase.database();
+
+  </script>
+
+  <script>
+    document.getElementById("signupForm").addEventListener("submit", async (e) => {
+      e.preventDefault();
+
+      const email = document.getElementById("email").value;
+      const password = document.getElementById("password").value;
+      const address = document.getElementById("address").value;
+      try {
+        // Tạo tài khoản Auth
+        const userCred = await auth.createUserWithEmailAndPassword(email, password);
+        const uid = userCred.user.uid;
+
+        // Lưu profile vào Database
+        await db.ref("users/" + uid).set({
+          email,
+          address,
+          createdAt: Date.now()
+        });
+
+        alert("Đăng ký thành công!");
+
+      } catch (err) {
+        alert("Lỗi: " + err.message);
+      }
+    });
+  </script>
+
+</body>
+
+</html>

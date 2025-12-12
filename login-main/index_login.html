@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Đăng nhập</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+  <div class="form-container">
+    <h2>Đăng nhập</h2>
+    <form id="loginForm">
+      <label for="email">Email:</label>
+      <input type="text" id="email" required>
+
+      <label for="password">Mật khẩu:</label>
+      <input type="password" id="password" required>
+
+      <button type="submit">Đăng nhập</button>
+    </form>
+    <p>Chưa có tài khoản? <a href="index_signup.html">Đăng ký</a></p>
+  </div>
+
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
+  <script>
+    const firebaseConfig = {
+      apiKey: "AIzaSyCxZiG2atJ0QXFZq0afg__t_VkMO-RGRvQ",
+      authDomain: "hungnhe1-d394c.firebaseapp.com",
+      databaseURL: "https://hungnhe1-d394c-default-rtdb.asia-southeast1.firebasedatabase.app",
+      projectId: "hungnhe1-d394c",
+      storageBucket: "hungnhe1-d394c.firebasestorage.app",
+      messagingSenderId: "840678788906",
+      appId: "1:840678788906:web:a41f28793a3dcc021c1853"
+    };
+
+    firebase.initializeApp(firebaseConfig);
+    const auth = firebase.auth();
+
+  </script>
+
+  <script>
+  const form = document.getElementById("loginForm");
+
+  form.addEventListener("submit", async (e) => {
+    e.preventDefault();
+
+    const email = document.getElementById("email").value.trim();
+    const password = document.getElementById("password").value;
+
+    try {
+      const userCred = await auth.signInWithEmailAndPassword(email, password);
+      if (email === "admin@gmail.com") {
+        alert("Admin đăng nhập thành công");
+        window.location.href = "/Kenh-nguoi-ban/upload.html";   
+        return;
+      }
+      else{alert("Đăng nhập thành công");}
+
+      window.location.href = "/index.html";
+
+    } catch (err) {
+      alert("Lỗi: " + err.message);
+    }
+  });
+</script>
+
+
+</body>
+
+</html>

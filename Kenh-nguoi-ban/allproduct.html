@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <title>Tất cả sản phẩm</title>
+    <style>
+        .pContainer {
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            align-items: center;
+            width: 1000px;
+            border: 1px solid #dcdcdc;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+            margin: 0 auto;
+            overflow: hidden;
+            border-radius: 7px;
+
+        }
+
+        .pContainer img {
+            width: 60px;
+            height: 60px;
+        }
+
+        #pName {
+            width: 200px;
+            padding: 0 10 0 10;
+        }
+
+        #pCategory {
+            width: 150px;
+        }
+
+        #pPrice {
+            width: 100px;
+        }
+
+        .deleteBtn {
+            padding: 6px 12px;
+            background: #ff4444;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .deleteBtn:hover {
+            background: #cc0000;
+        }
+    </style>
+</head>
+
+<body class="body-padding">
+    <header>
+        <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm fixed-top">
+            <div class="container">
+                <a class="navbar-brand text-dark fw-bold fs-3" href="/index.html">DREAMS HOME</a>
+
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                    aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+                    <ul class="navbar-nav">
+                        <li class="nav-item">
+                            <a class="nav-link text-uppercase" href="upload.html">Thêm sản phẩm</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-uppercase" href="allproduct.html">Tất cả sản phẩm</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-uppercase" href="history-admin.html">Lịch sử đơn hàng</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-uppercase" href="/login-main/index_login.html" id="login-link">
+                                <i class="fas fa-user me-1"></i>Admin
+                            </a>
+                        </li>
+
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+    <h1>Tất cả sản phẩm</h1>
+    <div id="productList"></div>
+
+    </section>
+    <footer class="bg-dark text-white text-center py-4 mt-5">
+        <div class="container">
+            <p class="mb-0 fs-6">&copy; 2025 Dreams Home. Luxury Bedding.</p>
+        </div>
+    </footer>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="animation.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
+
+
+    <script>
+        const firebaseConfig = {
+            apiKey: "AIzaSyCxZiG2atJ0QXFZq0afg__t_VkMO-RGRvQ",
+            authDomain: "hungnhe1-d394c.firebaseapp.com",
+            databaseURL: "https://hungnhe1-d394c-default-rtdb.asia-southeast1.firebasedatabase.app",
+            projectId: "hungnhe1-d394c",
+            storageBucket: "hungnhe1-d394c.firebasestorage.app",
+            messagingSenderId: "840678788906",
+            appId: "1:840678788906:web:a41f28793a3dcc021c1853"
+        };
+
+        // Khởi tạo Firebase (giữ nguyên cấu hình của bạn)
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.database();
+
+        const list = document.getElementById("productList");
+
+        // Hàm hiển thị danh sách + in ra key để kiểm tra
+        db.ref("products").on("value", snap => {
+            list.innerHTML = "";
+
+            const data = snap.val();
+            if (!data) {
+                list.innerHTML = '<div class="card" style="padding:16px"><i class="small">Chưa có sản phẩm nào</i></div>';
+                console.log("Firebase: products node empty");
+                return;
+            }
+
+            // In ra object keys để bạn kiểm tra xem key thực tế là gì
+            const keys = Object.keys(data);
+            console.log("Firebase products keys:", keys);
+
+            keys.forEach(id => {
+                const p = data[id];
+
+                const box = document.createElement("div");
+                box.className = "pContainer";
+
+                box.innerHTML = `
+        <img src="${p.img || p.image || ''}" alt="">
+        <div class="pName">${p.name || ''}</div>
+        <div class="pCategory">${p.category || ''}</div>
+        <div class="pPrice">${Number(p.price || 0).toLocaleString()}đ</div>
+        <button class="deleteBtn" data-id="${id}">Xoá</button>
+      `;
+
+                list.appendChild(box);
+            });
+        }, err => {
+            console.error("Error reading products:", err);
+        });
+
+        // Event delegation: gán 1 listener cho container, bắt mọi click nút Xoá
+        list.addEventListener('click', (e) => {
+            const btn = e.target.closest('.deleteBtn');
+            if (!btn) return; // không phải click vào nút xoá
+
+            const id = btn.dataset.id;
+            console.log("Delete button clicked, id =", id);
+
+            if (!id) {
+                alert("Không tìm thấy id sản phẩm (data-id trống). Kiểm tra console.");
+                return;
+            }
+
+            if (!confirm("Bạn có chắc muốn xoá sản phẩm này?")) return;
+
+            // Thử xóa và log chi tiết
+            const path = 'products/' + id;
+            console.log("Attempting remove at path:", path);
+
+            db.ref(path).remove()
+                .then(() => {
+                    console.log("Remove succeeded for id:", id);
+                    alert("Đã xoá thành công");
+                })
+                .catch(err => {
+                    console.error("Remove failed:", err);
+                    alert("Xóa thất bại: " + (err && err.message ? err.message : "Unknown error") + "\nXem console để biết chi tiết.");
+                });
+        });
+    </script>
+</body>
+
+</html>

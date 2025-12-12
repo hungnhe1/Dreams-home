@@ -1,0 +1,274 @@
+:root {
+    --primary-color: #3f51b5; 
+    --secondary-color: #f4f4f9; 
+    --text-color: #333;
+    --hover-color: #536dfe;
+    --card-bg: #fff;
+    --shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    line-height: 1.6;
+    color: var(--text-color);
+    background-color: var(--secondary-color);
+}
+
+.body-padding {
+    padding-top: 70px; /* Khắc phục lỗi Navbar cố định che khuất nội dung */
+}
+
+.container {
+    width: 90%;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+a {
+    text-decoration: none;
+    color: var(--text-color);
+}
+
+ul {
+    list-style: none;
+}
+
+/* ------------------------------------
+   HEADER & NAVIGATION (Fixed Top)
+------------------------------------ */
+.header {
+    background-color: var(--card-bg);
+    box-shadow: var(--shadow);
+    position: fixed; 
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 1000;
+}
+
+.header-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 0;
+}
+
+.logo {
+    color: var(--primary-color);
+    margin: 0;
+    font-size: 1.8em;
+}
+
+.nav-list {
+    display: flex;
+    gap: 20px;
+}
+
+.nav-list a {
+    text-decoration: none;
+    color: var(--text-color);
+    font-weight: bold;
+    padding: 10px 5px;
+    display: block;
+}
+
+.nav-list a:hover {
+    color: var(--hover-color);
+}
+
+/* ------------------------------------
+   DROPDOWN MENU (Hoạt ảnh cuộn xuống)
+------------------------------------ */
+/* Thêm transition nhẹ nhàng cho menu dropdown */
+.dropdown-menu {
+    /* Đã có transition mặc định, nhưng có thể tăng tốc độ */
+    transition: all 0.2s ease-out; 
+    transform: translateY(-5px); /* Bắt đầu hơi cao hơn */
+    opacity: 0; /* Bắt đầu ẩn */
+    display: block; /* Quan trọng: Đảm bảo Bootstrap vẫn có thể quản lý show/hide */
+}
+
+/* Khi menu được mở (Bootstrap thêm class 'show') */
+.dropdown-menu.show {
+    opacity: 1; /* Hiển thị */
+    transform: translateY(0); /* Trượt về vị trí ban đầu */
+}
+
+.dropdown {
+    position: relative;
+}
+
+.dropdown-content {
+    /* Thiết lập cho hoạt ảnh cuộn xuống */
+    max-height: 0; 
+    overflow: hidden; 
+    transition: max-height 0.3s ease-in-out; 
+
+    position: absolute;
+    top: 100%;
+    left: 0;
+    background-color: var(--card-bg);
+    min-width: 160px;
+    box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
+    z-index: 1;
+    border-top: 3px solid var(--primary-color);
+}
+
+.dropdown-content a {
+    font-weight: normal;
+    padding: 12px 16px;
+    text-align: left;
+}
+
+/* ------------------------------------
+   HERO SECTION (VIDEO NỀN)
+------------------------------------ */
+.hero-section {
+    position: relative;
+    height: 80vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    overflow: hidden;
+    background-color: #333; 
+}
+
+.video-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+}
+
+#bg-video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    opacity: 0.6; 
+}
+
+.overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.4); 
+    z-index: 1;
+}
+
+.hero-content {
+    position: relative;
+    z-index: 2;
+    color: white;
+}
+
+.btn-primary {
+    background-color: var(--primary-color);
+    color: white;
+    padding: 10px 20px;
+    text-decoration: none;
+    border-radius: 5px;
+    display: inline-block;
+    transition: background-color 0.3s;
+}
+
+/* ------------------------------------
+   PRODUCT SECTION (Sửa lỗi cắt ảnh)
+------------------------------------ */
+.product-section {
+    padding: 40px 0;
+    text-align: center;
+}
+
+.product-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 30px;
+}
+
+.product-card {
+    background-color: var(--card-bg);
+    border-radius: 8px;
+    box-shadow: var(--shadow);
+    padding-bottom: 20px;
+    text-align: center;
+    height: 100%; /* Đảm bảo chiều cao thẻ đồng nhất */
+    display: flex;
+    flex-direction: column;
+    transform: scale(1);
+}
+.product-card:hover {
+    transform: scale(1.03);
+    transition: transform 0.4s ease-in-out;
+}
+.product-card img {
+    width: 100%;
+    height: 250px;
+    /* FIX: Dùng 'contain' để toàn bộ ảnh hiển thị, không bị cắt */
+    object-fit: contain; 
+    border-radius: 8px 8px 0 0;
+    margin-bottom: 15px;
+    padding: 10px;
+    flex-shrink: 0;
+    transform: scale(1);
+    border-radius: 25px;
+}
+.product-card img:hover {
+    transform: scale(1.05);
+    transition: transform 0.4s ease-in-out;
+}
+.price {
+    color: #e91e63; 
+    font-weight: bold;
+    font-size: 1.3em;
+    margin-bottom: 15px;
+    margin-top: auto; /* Đẩy giá xuống cuối thẻ */
+}
+
+/* ------------------------------------
+   FOOTER
+------------------------------------ */
+.footer {
+    background-color: var(--text-color);
+    color: white;
+    text-align: center;
+    padding: 20px 0;
+    margin-top: 50px;
+}
+
+.dropdown {
+    position: relative;
+}
+
+.dropdown-content {
+    /* Thiết lập cho hoạt ảnh cuộn xuống */
+    max-height: 0; 
+    overflow: hidden; 
+    /* Đảm bảo transition chỉ áp dụng cho max-height */
+    transition: max-height 0.4s ease-in-out; 
+
+    position: absolute;
+    top: 100%;
+    left: 0;
+    background-color: var(--card-bg);
+    min-width: 160px;
+    box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
+    z-index: 1;
+    border-top: 3px solid var(--primary-color);
+}
+
+.dropdown-content a {
+    font-weight: normal;
+    padding: 12px 16px;
+    text-align: left;
+}
